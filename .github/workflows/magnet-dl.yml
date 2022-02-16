@@ -2,8 +2,8 @@
 
 # Usage
 # 1. Place this file within .github/workflows in your GitHub repo and push.
-# 2. Select this workflow from the Repo Actions tab, add your Magnet URI,
-#    and click Run Workflow.
+# 2. Select this workflow from the Repo Actions tab, select Run Workflow,
+#    add your Magnet URI, and wait a little while.
 #
 # This workflow produces a build artifact that contains URLs pointing to
 # sequential *.tar.gz chunks you can download non-interactively with
@@ -38,8 +38,8 @@ jobs:
       - name: Tarball file(s) in place
         run: |
           mkdir parts
-          tar --remove-files --strip-components=1 -c dl/ \
-            | pigz | split -db 1000M - parts/file.tar.gz.
+          tar --remove-files -c dl/ \
+            | pigz -1 | split -db 1000M - parts/file.tar.gz.
       - name: Upload tarball chunk(s) to litterbox.catbox.moe
         run: |
           for f in parts/*; do
