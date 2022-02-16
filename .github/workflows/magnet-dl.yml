@@ -21,9 +21,9 @@ on: workflow_dispatch
 jobs:
   Download:
     runs-on: ubuntu-latest
+    env:
+      MAGNET: {{ secrets.MAGNET_LINK }}
     steps:
-      env:
-        MAGNET: {{ secrets.MAGNET_LINK }}
       - name: Download file(s)
         run: |
           mkdir dl parts
