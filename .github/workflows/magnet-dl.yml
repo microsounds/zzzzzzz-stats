@@ -1,10 +1,9 @@
 # gh-actions workflow to download from magnet links
 
 # Usage
-# 1. Place this file within .github/workflows in your repo and push.
-# 2. Go to Repo Settings > Actions > Secrets
-# 3. Add a new repository secret MAGNET_LINK with your 'magnet:?xt=...'
-# 4. Select this workflow from the Repo Actions tab and select Run Workflow.
+# 1. Place this file within .github/workflows in your GitHub repo and push.
+# 2. Select this workflow from the Repo Actions tab, add your Magnet URI,
+#    and click Run Workflow.
 #
 # This workflow produces a build artifact that contains URLs pointing to
 # sequential *.tar.gz chunks you can download non-interactively with
@@ -31,7 +30,7 @@ jobs:
       MAGNET: ${{ github.event.inputs.MAGNET_URI }}
     steps:
       - name: Install prerequisite(s)
-        run: apt-get install -y aria2 pigz
+        run: sudo apt-get install -y aria2 pigz
       - name: Download file(s)
         run: |
           mkdir dl
