@@ -22,11 +22,7 @@ on:
       MAGNET_URI:
         type: string
         required: true
-        description:
-          **Magnet Link/URI**
-          This workflow produces a build artifact that contains URLs pointing to
-          sequential *.tar.gz chunks you can download non-interactively with
-          `wget -i download.txt | tar -xzv`. Links and artifacts expire in 24 hours.
+        description: Magnet Link/URI
 
 jobs:
   Download:
@@ -58,4 +54,3 @@ jobs:
           name: artifact
           path: download.txt
           retention-days: 1
-
