@@ -16,7 +16,7 @@ jobs:
           mkdir dl parts
           aria2c -d dl --seed-time=0 "$MAGNET"
       - name: Tarball file(s) in place
-        run: tar --remove-files -c dl/ | gzip | split -db 1M - parts/file.tar.gz.
+        run: tar --remove-files -c dl/ | gzip | split -db 1000M - parts/file.tar.gz.
       - name: Upload tarball chunk(s) to litterbox.catbox.moe
         run: |
           for f in parts/*; do
