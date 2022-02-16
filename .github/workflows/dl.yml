@@ -1,7 +1,8 @@
 # barebones gh-actions workflow to download magnet links as a build artifact
 # and seed for the rest of the execution run (probably 6 hours)
-# soft limit on disk space per job is 25GB
-name: Download Magnet as Artifact
+# soft limit on disk space per job is 25GB, artifact is zipped on the same runner
+# use SSH server if download is over 12GB
+name: Download Magnet by Proxy
 on: push
 
 jobs:
@@ -12,16 +13,20 @@ jobs:
     steps:
       - name: Download file(s)
         run: |
-          mkdir dl
+          mkdir dl parts
           aria2c -d dl --seed-time=0 "$MAGNET"
-      - name: Spawn SSH server with tmate
-        uses: mxschmitt/action-tmate@v3
-#      - name: Upload as artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: artifact
-#          path: dl
-#          retention-days: 30
-      - name: Seed file(s) as long as possible
-        run: aria2c -V --seed-ratio=0 "$MAGNET"
-
+      - name: Tarball file(s) in place
+        run: tar --remove-files -c dl/ | gzip | split -db 1M - parts/file.tar.gz.
+      - name: Upload tarball chunk(s) to litterbox.catbox.moe
+        run: |
+          for f in parts/*; do
+            curl -F 'reqtype=fileupload' -F 'time=24h' -F "fileToUpload=@$f" \
+              'https://litterbox.catbox.moe/resources/internals/api.php'
+            printf '\n'
+          done | tee /dev/stderr > download.txt
+      - name: Upload file URL list as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: download.txt
+          retention-days: 30
