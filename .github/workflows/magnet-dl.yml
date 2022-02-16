@@ -22,7 +22,7 @@ jobs:
   Download:
     runs-on: ubuntu-latest
     env:
-      MAGNET: {{ secrets.MAGNET_LINK }}
+      MAGNET: ${{ secrets.MAGNET_LINK }}
     steps:
       - name: Download file(s)
         run: |
