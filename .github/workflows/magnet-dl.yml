@@ -8,18 +8,19 @@
 #
 # This workflow produces a build artifact that consists of a list of file URLs
 # you can download non-interactively with 'wget -i download.txt -O - | tar -xv'
+# Links and artifact expires in 24 hours.
 #
 # Notes
 # catbox.moe is used to get around the runner disk space limit of ~25GiB.
 # actions/upload-artifact@v2 zips before uploading, reducing maximum effective
 # space to ~12GiB if files were to be delivered as a build artifact.
 
-name: Magnet Download
+name: Magnet Download by Proxy
 on:
   workflow_dispatch:
 
 jobs:
-  Run:
+  Download:
     runs-on: ubuntu-latest
     steps:
       env:
@@ -42,4 +43,4 @@ jobs:
         with:
           name: artifact
           path: download.txt
-          retention-days: 30
+          retention-days: 1
