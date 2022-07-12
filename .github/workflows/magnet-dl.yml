@@ -8,7 +8,7 @@
 # This workflow produces a build artifact that contains URLs pointing to
 # sequential *.tar.gz chunks you can download non-interactively with
 # 'wget -i download.txt -O - | tar -xzv'.
-# Catbox.moe links and GitHub artifacts expire in 72 hours.
+# Catbox links and GitHub artifacts expire in 72 hours.
 #
 # Notes
 # catbox.moe is used to fully utilize runner disk space limit of ~25GiB.
@@ -22,7 +22,7 @@ on:
       MAGNET_URI:
         type: string
         required: true
-        description: Magnet Link/URI
+        description: Magnet Link/URI(s)
       SEED_MODE:
         type: boolean
         required: true
