@@ -39,7 +39,8 @@ jobs:
       - name: Download file(s)
         run: |
           mkdir dl
-          aria2c -d dl --seed-time=0 --enable-dht=true --disable-ipv6 "$MAGNET"
+          aria2c -d dl --seed-time=0 \
+            --force-sequential --disable-ipv6 "$MAGNET"
       - name: Tarball file(s) in place
         run: |
           mkdir parts
