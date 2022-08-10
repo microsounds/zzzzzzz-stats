@@ -27,6 +27,16 @@ table {
   table-layout: auto;
 }
 
+h2 {
+  margin-top: 0;
+  margin-bottom: 0.75em;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgb(36, 41, 46);
+  fill: rgb(36, 41, 46);
+}
+
 th {
   padding: 0.5em;
   padding-top: 0;
@@ -73,7 +83,7 @@ tr {
 
 <table>
 <thead><tr style="transform: translateX(0);">
-<th colspan="2">statistics</th>
+<th colspan="2"><h2>GitHub Statistics</h2></th>
 </tr></thead>
 <tbody>
 
