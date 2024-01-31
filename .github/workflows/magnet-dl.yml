@@ -69,4 +69,4 @@ jobs:
           for f in parts/*; do
             cat "$f"; rm "$f"
           done | pigz -d | tar -xv
-          $ARIA2C -V -c $MAGNET || :
+          $ARIA2C -V -c --seed-ratio=0 $MAGNET || :
