@@ -1,0 +1,45 @@
+# gh-actions workflow to download from magnet links
+
+# Usage
+# 1. Place this file within .github/workflows in your GitHub repo and push.
+# 2. Select this workflow from the Repo Actions tab, select Run Workflow,
+#    add your Magnet URI(s), and wait a little while.
+#
+# This workflow produces a build artifact that contains URLs pointing to
+# sequential *.tar.gz chunks you can download non-interactively with
+# 'wget -i download.txt -O - | tar -xzv'.
+# Catbox links and GitHub artifacts expire in 72 hours.
+#
+# Notes
+# catbox.moe is used to fully utilize runner disk space limit of ~25GiB.
+# actions/upload-artifact@v2 zips before uploading, reducing maximum effective
+# space to ~12GiB if files were to be delivered as a build artifact.
+
+name: Magnet Download by Artifact
+on:
+  workflow_dispatch:
+    inputs:
+      MAGNET_URI:
+        type: string
+        required: true
+        description: Magnet Link/URI(s)
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    env:
+      MAGNET: ${{ github.event.inputs.MAGNET_URI }}
+      ARIA2C: aria2c -d dl --disable-ipv6 --force-sequential
+    steps:
+      - name: Install prerequisite(s)
+        run: sudo apt-get install -y aria2 pigz
+      - name: Download file(s)
+        run: |
+          mkdir dl
+          $ARIA2C --seed-time=0 $MAGNET
+      - name: Upload file URL list as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact
+          path: dl/
+          retention-days: 3
